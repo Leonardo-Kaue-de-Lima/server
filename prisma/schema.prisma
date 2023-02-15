@@ -25,6 +25,8 @@ model AcionaEmergencia {
   Tecla01            String
   Tecla02            String
   Tecla03            String
+  UserID String @unique
+  User User @relation(fields: [UserID],references: [IdUser])
 }
 
 model ContatosEmergencia {
