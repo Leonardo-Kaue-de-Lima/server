@@ -11,10 +11,22 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(cuid())
+  IdUser   String @id @default(cuid())
   Nome     String
   CPF      BigInt @unique
   Email    String @unique
   Telefone String @unique
   Password String
+}
+
+model AcionaEmergencia {
+  IdAcionaEmergencia Int    @id @default(autoincrement())
+  Biometric          Bytes
+  Tecla01            String
+  Tecla02            String
+  Tecla03            String
+}
+
+model ContatosEmergencia {
+  IdContatoEmergencia Int @id @default(autoincrement())
 }
