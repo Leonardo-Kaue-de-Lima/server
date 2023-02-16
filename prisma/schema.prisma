@@ -11,24 +11,47 @@ datasource db {
 }
 
 model User {
-  IdUser   String @id @default(cuid())
-  Nome     String
-  CPF      BigInt @unique
-  Email    String @unique
-  Telefone String @unique
-  Password String
+  id        String   @id @default(cuid())
+  nome      String
+  avatarUrl String?
+  cpf       BigInt   @unique
+  email     String   @unique
+  telefone  String   @unique
+  password  String
+  crearedAt DateTime @default(now())
+
+  acionaEmergencia   AcionaEmergencia[]
+  ContatosEmergencia ContatosEmergencia[]
+  Mensagem           Mensagem[]
 }
 
 model AcionaEmergencia {
-  IdAcionaEmergencia Int    @id @default(autoincrement())
-  Biometric          Bytes
-  Tecla01            String
-  Tecla02            String
-  Tecla03            String
-  UserID String @unique
-  User User @relation(fields: [UserID],references: [IdUser])
+  id        Int    @id @default(autoincrement())
+  biometric Bytes
+  tecla01   String
+  tecla02   String
+  tecla03   String
+  userId    String
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model ContatosEmergencia {
-  IdContatoEmergencia Int @id @default(autoincrement())
+  id        Int    @id @default(autoincrement())
+  contato01 String
+  contato02 String
+  contato03 String
+  userId    String
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Mensagem {
+  id             String   @id @default(cuid())
+  remetenteId    String
+  destinatarioId String
+  mensagem       String
+  crearedAt      DateTime @default(now())
+
+  destinatario User @relation(fields: [destinatarioId], references: [id])
 }
