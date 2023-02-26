@@ -1,10 +1,8 @@
 import Fastify from "fastify"
-import { PrismaClient } from '@prisma/client'
 import cors from "@fastify/cors"
+import jwt from "@fastify/jwt"
 
-const prisma = new PrismaClient({
-  log: ['query'],
-})
+import { authRoutes } from "./Routes/Auth"
 
 async function bootstrap() {
   const fastify = Fastify({
@@ -12,23 +10,18 @@ async function bootstrap() {
   })
 
   await fastify.register(cors, {
-    origin: true
+    origin: true,
   })
 
-  fastify.get('/alerty/login', async () => {
+  // Em produção isso precisa ser uma viarável de ambiente
 
-    const users = await prisma.user.findMany({
-      where:{
-        Email:{
-          startsWith: 'l'
-        }
-      }
-    })
-
-    return(true)
+  await fastify.register(jwt, {
+    secret: 'alerty',
   })
 
-  await fastify.listen({port:3333, host: '0.0.0.0'})
+  await fastify.register(authRoutes)
+
+  await fastify.listen({ port: 3333, host: '0.0.0.0' })
 }
 
 bootstrap()
