@@ -14,10 +14,9 @@ model User {
   id        String   @id @default(cuid())
   nome      String
   avatarUrl String?
-  cpf       BigInt   @unique
+  googleId  String?  @unique
   email     String   @unique
-  telefone  String   @unique
-  password  String
+  telefone  String?  @unique
   crearedAt DateTime @default(now())
 
   acionaEmergencia   AcionaEmergencia[]
@@ -26,32 +25,32 @@ model User {
 }
 
 model AcionaEmergencia {
-  id        Int    @id @default(autoincrement())
-  biometric Bytes
-  tecla01   String
-  tecla02   String
-  tecla03   String
+  id        Int     @id @default(autoincrement())
+  biometric String?
+  tecla01   String?
+  tecla02   String?
+  tecla03   String?
   userId    String
 
   user User @relation(fields: [userId], references: [id])
 }
 
 model ContatosEmergencia {
-  id        Int    @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   contato01 String
-  contato02 String
-  contato03 String
-  userId    String
+  contato02 String?
+  contato03 String?
+  owner     String
 
-  user User @relation(fields: [userId], references: [id])
+  Owner User @relation(fields: [owner], references: [id])
 }
 
 model Mensagem {
-  id             String   @id @default(cuid())
-  remetenteId    String
-  destinatarioId String
-  mensagem       String
-  crearedAt      DateTime @default(now())
+  id           String   @id @default(cuid())
+  remetenteId  String
+  destinatario String
+  mensagem     String
+  crearedAt    DateTime @default(now())
 
-  destinatario User @relation(fields: [destinatarioId], references: [id])
+  remetente User @relation(fields: [remetenteId], references: [id])
 }
