@@ -4,8 +4,10 @@ import { prisma } from "../lib/prisma"
 import { authenticate } from "../plugins/authenticate"
 
 export async function authRoutes(fastify: FastifyInstance) {
-  fastify.get('/me', {onRequest: [authenticate]},
-   async (request) => {return { user: request.user };
+  fastify.get('/me',{
+      onRequest: [authenticate]
+    },async (request) => {
+    return { user: request.user };
   });
 
   //Requisição para criação de usuario, enviando o access_token do front 
@@ -54,17 +56,18 @@ export async function authRoutes(fastify: FastifyInstance) {
           avatarUrl: userInfo.picture,
         }
       })
-    }
+    }    
     
+    //Gerando token com hash para validar usuario, primeiro passando parametros que conterão no token e depois quem criou e quando ele expira 
+    const token =  fastify.jwt.sign({
+      name: user.nome,
+      avatarUrl: user.avatarUrl,
+    }, {
+      sub: user.id,
+      expiresIn: '7 days'
+    })
 
-//     const token =  fastify.jwt.sign({
-//       name: user.name,
-//       avatarUrl: user.avatarUrl,
-//     }, {
-//       sub: user.id,
-//       expiresIn: '7 days'
-//     })
-
-//     return { token }
+    //Devolve token para a aplicação 
+    return { token }
    })
 }
