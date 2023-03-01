@@ -16,12 +16,12 @@ async function bootstrap() {
   // Em produção isso precisa ser uma viarável de ambiente
 
   await fastify.register(jwt, {
-    secret: '4l3rt1l3ogu',
+    secret: 'alerty',
   })
 
   await fastify.register(authRoutes)
 
-  await fastify.listen({ port: 3333, host: '192.168.0.85' })
+  await fastify.listen({ port: 3333, host: '0.0.0.0' })
 }
 
 bootstrap()
