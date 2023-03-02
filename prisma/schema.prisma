@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -17,10 +17,10 @@ model User {
   googleId String? @unique
   email String? @unique
   telefone String? @unique
-  createdAt DateTime
+  createdAt DateTime @default(now())
 
   contactUser ContactUser[]
-  // Mensagem Mensagem[]
+  Mensagem Mensagem[]
 
   @@map("user")
 }
@@ -28,20 +28,17 @@ model User {
 model ContactUser {
   id String @id @default(uuid())
   contact String
-  amount Int
+  user_id String
 
-  user User @relation(fields: [contact], references: [id])
+  user User @relation(fields: [user_id], references: [id])
 
-  @@unique([contact, amount])
   @@map("contact_user")
 }
 
-// model Mensagem {
-//   id String @id @default(uuid())
-//   remetenteId String
-//   destinatario String
-//   mensagem String
-//   createdAt DateTime
+model Mensagem {
+  id String @id @default(uuid())
+  mensagem String
+  user_id String
 
-//   remetente User @relation(fields: [remetenteId], references: [id])
-// }
+  user User @relation(fields: [user_id], references: [id])
+}

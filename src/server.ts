@@ -1,23 +1,31 @@
 import Fastify from "fastify";
-import { PrismaClient } from "@prisma/client";
 import cors from "@fastify/cors";
 import jwt from '@fastify/jwt';
 
 import { authRoutes } from "./Routes/Auth"
+import { contatosRoutes } from "./Routes/Contatos";
+import { MensagemRoutes } from "./Routes/Mensagem";
 
-const app = Fastify()
-const prisma = new PrismaClient();
+async function bootstrap() {
+  const fastify = Fastify({
+    logger: true,
+  })
 
-app.register(cors)
+  await fastify.register(cors, {
+    origin: true,
+  })
 
-app.get('/users', () => {
-  const users = prisma.user.findMany()
+  // Em produção isso precisa ser uma viarável de ambiente
 
-  return users;
-})
+  await fastify.register(jwt, {
+    secret: 'alerty',
+  })
 
-app.listen({
-  port: 3333,
-}).then(() => {
-  console.log('HTTP Server running!')
-})
+  await fastify.register(authRoutes)
+  await fastify.register(contatosRoutes)
+  await fastify.register(MensagemRoutes)
+
+  await fastify.listen({ port: 3333, host: '0.0.0.0' })
+}
+
+bootstrap()
