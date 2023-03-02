@@ -1,41 +1,21 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
-const prisma = new PrismaClient()
+async function main() {
+    await prisma.user.deleteMany()
 
-async function Main(){
-    const User = await prisma.user.create({
-      data:{
-        nome: 'John Doe',
-        email: 'leonlima1610@gmail.com',
-        telefone: '(51) 984729267',
-      } 
-    })
-
-    const contatos = await prisma.contatosEmergencia.create({
-      data:{
-        contato01: '51 998429060',
-        owner: User.id
-      }
-    })
-
-    const mensagem = await prisma.mensagem.create({
-      data:{
-        mensagem:'SOS: Socorro posso estar em alguma situação de perigo, se você recebeu está mensagem porfavor contato a policia e tente contato comigo',
-        destinatario: '51 998429060',
-        remetenteId: User.id,        
-      }
-    })
-
-    const aciona = await prisma.acionaEmergencia.create({
-      data:{
-        userId: User.id,
-        tecla01: 'volumen',
-        tecla02:'volumem',
-        tecla03: 'volumen',
-        biometric: 'aaa',
-
-      }
+    await prisma.user.create({
+        data: {
+            nome: 'Joaozinho',
+            createdAt: new Date('2023-03-01T00:00:00.000Z'),
+        }
     })
 }
 
-Main()
+main().then(async () => {
+    await prisma.$disconnect()
+}).catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+})

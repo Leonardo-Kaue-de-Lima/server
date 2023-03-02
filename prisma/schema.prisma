@@ -6,51 +6,42 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String   @id @default(cuid())
-  nome      String
+  id String @id @default(uuid())
+  nome String
   avatarUrl String?
-  googleId  String?  @unique
-  email     String   @unique
-  telefone  String?  @unique
-  crearedAt DateTime @default(now())
+  googleId String? @unique
+  email String? @unique
+  telefone String? @unique
+  createdAt DateTime
 
-  acionaEmergencia   AcionaEmergencia[]
-  ContatosEmergencia ContatosEmergencia[]
-  Mensagem           Mensagem[]
+  contactUser ContactUser[]
+  // Mensagem Mensagem[]
+
+  @@map("user")
 }
 
-model AcionaEmergencia {
-  id        Int     @id @default(autoincrement())
-  biometric String?
-  tecla01   String?
-  tecla02   String?
-  tecla03   String?
-  userId    String
+model ContactUser {
+  id String @id @default(uuid())
+  contact String
+  amount Int
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [contact], references: [id])
+
+  @@unique([contact, amount])
+  @@map("contact_user")
 }
 
-model ContatosEmergencia {
-  id        Int     @id @default(autoincrement())
-  contato01 String
-  contato02 String?
-  contato03 String?
-  owner     String
+// model Mensagem {
+//   id String @id @default(uuid())
+//   remetenteId String
+//   destinatario String
+//   mensagem String
+//   createdAt DateTime
 
-  Owner User @relation(fields: [owner], references: [id])
-}
-
-model Mensagem {
-  id           String   @id @default(cuid())
-  remetenteId  String
-  destinatario String
-  mensagem     String
-  crearedAt    DateTime @default(now())
-
-  remetente User @relation(fields: [remetenteId], references: [id])
-}
+//   remetente User @relation(fields: [remetenteId], references: [id])
+// }
