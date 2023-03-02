@@ -25,6 +25,7 @@ export async function contatosRoutes(fastify: FastifyInstance) {
 
       const contactInfoSchema = z.object({
         contact: string(),
+        name: string(),
         })
 
       const dados = contactInfoSchema.parse(request.body);
@@ -33,6 +34,7 @@ export async function contatosRoutes(fastify: FastifyInstance) {
       const newContact = await prisma.contactUser.create({
         data: {
           contact: dados.contact,
+          name: dados.name,
           user_id: id.id
         },include:{
           user: true
@@ -71,7 +73,8 @@ export async function contatosRoutes(fastify: FastifyInstance) {
   async (request) => {
     const contactInfoSchema = z.object({
       contact: string(),
-      })
+      name: string() 
+    })
 
     const dados = contactInfoSchema.parse(request.body);
 
@@ -85,7 +88,8 @@ export async function contatosRoutes(fastify: FastifyInstance) {
       where: {
         id: id.id 
       },data:{
-        contact: dados.contact
+        contact: dados.contact,
+        name: dados.name        
       }
         
     })

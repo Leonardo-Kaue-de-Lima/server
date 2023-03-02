@@ -27,6 +27,7 @@ model User {
 
 model ContactUser {
   id String @id @default(uuid())
+  name String 
   contact String
   user_id String
 
