@@ -71,7 +71,7 @@ export async function MensagemRoutes(fastify: FastifyInstance) {
     try {
 
       const mensageInfoSchema = z.object({
-        mensage: string(),
+        mensagem: string(),
         })
 
       const dados = mensageInfoSchema.parse(request.body);
@@ -86,7 +86,7 @@ export async function MensagemRoutes(fastify: FastifyInstance) {
         where: {
           id: id.id 
         },data:{
-          mensagem: dados.mensage
+          mensagem: dados.mensagem
         }
           
       })
