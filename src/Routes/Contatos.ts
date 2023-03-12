@@ -29,7 +29,7 @@ export async function contatosRoutes(fastify: FastifyInstance) {
         })
 
       const dados = contactInfoSchema.parse(request.body);
-
+        console.log('chegou aqui', dados)
       // Cria o contato no banco de dados
       const newContact = await prisma.contactUser.create({
         data: {
@@ -45,7 +45,7 @@ export async function contatosRoutes(fastify: FastifyInstance) {
       // Retorna o novo contato criado
       return newContact;
     } catch (error: any) {
-      console.log("testando erro")
+      console.log("testando erro",  error)
       // Em caso de erro, retorna uma mensagem de erro com o status 500
       reply.status(500).send({ error: error.message });
     }
