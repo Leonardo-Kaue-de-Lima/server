@@ -30,6 +30,7 @@ model ContactUser {
   name String 
   contact String
   user_id String
+  email String
 
   user User @relation(fields: [user_id], references: [id])
 
