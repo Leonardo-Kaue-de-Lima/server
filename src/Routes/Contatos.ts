@@ -10,22 +10,25 @@ export async function userRoutes(fastify: FastifyInstance) {
     return { count }
   })
 
-  fastify.post('/contatos/create', {
-    onRequest: [authenticate]
-   }, async (request, reply) =>{
+  // Rota POST para criar um novo contato
+  fastify.post('/contact-user', async (request, reply) => {
+    try {
+      // Obtém os dados enviados no body da requisição
+      const { contact, amount } = request.body;
 
-    const createUser = z.object({
-      name: z.string(),
-      numero: z.string(),
-    })  
+      // Cria o contato no banco de dados
+      const newContact = await prisma.contatosEmergencia.create({
+        data: {
+          ,
+          amount
+        }
+      });
 
-    const { numero } = createUser.parse(request.body)
-
-    const contato = await prisma.contatosEmergencia.findUnique({
-      where:{
-        contato01,
-      }
-    })
-
-  })
+      // Retorna o novo contato criado
+      return newContact;
+    } catch (error) {
+      // Em caso de erro, retorna uma mensagem de erro com o status 500
+      reply.status(500).send({ error: error.message });
+    }
+});
 }
