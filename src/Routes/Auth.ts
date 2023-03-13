@@ -35,6 +35,7 @@ export async function authRoutes(fastify: FastifyInstance) {
       email: z.string().email(),
       name: z.string(),
       picture: z.string().url(),
+      phoneNumber: z.string().url(),
     })
 
     //verificando se os dados que vamos receber do google batem com o esperado
@@ -54,6 +55,7 @@ export async function authRoutes(fastify: FastifyInstance) {
           nome: userInfo.name,
           email: userInfo.email,
           avatarUrl: userInfo.picture,
+          telefone: userInfo.phoneNumber,
         }
       })
     }    
