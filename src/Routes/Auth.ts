@@ -35,7 +35,6 @@ export async function authRoutes(fastify: FastifyInstance) {
       email: z.string().email(),
       name: z.string(),
       picture: z.string().url(),
-      phoneNumber: z.string().url(),
     })
 
     //verificando se os dados que vamos receber do google batem com o esperado
@@ -55,7 +54,7 @@ export async function authRoutes(fastify: FastifyInstance) {
           nome: userInfo.name,
           email: userInfo.email,
           avatarUrl: userInfo.picture,
-          telefone: userInfo.phoneNumber,
+          telefone: ""
         }
       })
     }    
@@ -64,6 +63,7 @@ export async function authRoutes(fastify: FastifyInstance) {
     const token =  fastify.jwt.sign({
       name: user.nome,
       avatarUrl: user.avatarUrl,
+      telefone: user.telefone
     }, {
       sub: user.id,
       expiresIn: '7 days'
