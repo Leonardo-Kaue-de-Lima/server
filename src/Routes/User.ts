@@ -10,7 +10,7 @@ export async function UserRoutes(fastify: FastifyInstance) {
       const userInfoSchema = z.object({
         name: string(),
         telefone: string(),
-        avatarUrl: string()
+        avatarUrl: string().url()
       })
 
       const dados = userInfoSchema.parse(request.body);
@@ -25,9 +25,9 @@ export async function UserRoutes(fastify: FastifyInstance) {
         where: {
           id: id.id
         }, data: {
-          nome: dados.name,
+          nome: dados?.name,
           telefone: dados.telefone,
-          avatarUrl: dados.avatarUrl,
+          avatarUrl: dados?.avatarUrl,
           
         }
 

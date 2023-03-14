@@ -93,7 +93,7 @@ export async function contatosRoutes(fastify: FastifyInstance) {
         }, data: {
           contact: dados.contact,
           name: dados.name,
-          email: dados.email
+          email: dados.email,
         }
 
       })
