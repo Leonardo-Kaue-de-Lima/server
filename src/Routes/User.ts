@@ -8,9 +8,7 @@ export async function UserRoutes(fastify: FastifyInstance) {
   fastify.post('/user/:id/update', { onRequest: [authenticate] },
     async (request) => {
       const userInfoSchema = z.object({
-        name: string(),
         telefone: string(),
-        avatarUrl: string().url()
       })
 
       const dados = userInfoSchema.parse(request.body);
@@ -25,9 +23,8 @@ export async function UserRoutes(fastify: FastifyInstance) {
         where: {
           id: id.id
         }, data: {
-          nome: dados?.name,
           telefone: dados.telefone,
-          avatarUrl: dados?.avatarUrl,
+         
           
         }
 
